@@ -9,7 +9,7 @@ import "@bitdsm/core/AppRegistry.sol";
 
 contract InitializeAppRegistry is Script {
     address constant APP_REGISTRY = 0x67fF1A0f47Ba0e7b4D2c96546F97EaACc9Db129E;
-    address constant PROXY_ADMIN = 0x...; // Add your ProxyAdmin contract address here
+    address constant PROXY_ADMIN = 0x742d35Cc6634C0532925a3b844Bc454e4438f44e; // Add your ProxyAdmin contract address here
 
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");

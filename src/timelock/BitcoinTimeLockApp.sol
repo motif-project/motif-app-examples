@@ -34,7 +34,6 @@ contract BitcoinTimelockApp is Ownable, IERC1271 {
 
     function unlockPod(address pod) external {
         require(block.timestamp >= podUnlockTimes[pod], "Time lock not expired");
-        require(msg.sender == IBitcoinPod(pod).owner(), "Not pod owner");
         
         podManager.unlockPod(pod);
         delete podUnlockTimes[pod];

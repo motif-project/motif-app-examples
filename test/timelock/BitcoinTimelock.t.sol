@@ -2,11 +2,11 @@
 pragma solidity ^0.8.12;
 
 import "forge-std/Test.sol";
-import "../../src/timelock/BitcoinTimelockApp.sol";
+import "../../src/timelock/BitcoinTimeLockApp.sol";
 
-contract BitcoinTimelockAppTest is Test {
-    BitcoinTimelockApp public timelock;
-    address constant BITCOIN_POD_MANAGER = 0x641fF9A3d79f24fE45Fb6b7351bcB43C2e7aed44;
+contract BitcoinTimeLockAppTest is Test {
+    BitcoinTimeLockApp public timelock;
+    address constant _BITCOIN_POD_MANAGER = 0x641fF9A3d79f24fE45Fb6b7351bcB43C2e7aed44;
     
     address podOwner = address(0x1);
     address operator = address(0x2);
@@ -14,7 +14,7 @@ contract BitcoinTimelockAppTest is Test {
 
     function setUp() public {
         // Deploy timelock contract
-        timelock = new BitcoinTimelockApp(BITCOIN_POD_MANAGER);
+        timelock = new BitcoinTimeLockApp(_BITCOIN_POD_MANAGER, podOwner);
 
         // Setup mock pod
         //vm.mockCall(
@@ -25,12 +25,12 @@ contract BitcoinTimelockAppTest is Test {
 
         // Setup mock pod manager
         vm.mockCall(
-            BITCOIN_POD_MANAGER,
+            _BITCOIN_POD_MANAGER,
             abi.encodeWithSelector(IBitcoinPodManager.lockPod.selector, mockPod),
             abi.encode()
         );
         vm.mockCall(
-            BITCOIN_POD_MANAGER,
+            _BITCOIN_POD_MANAGER,
             abi.encodeWithSelector(IBitcoinPodManager.unlockPod.selector, mockPod),
             abi.encode()
         );

@@ -1,13 +1,15 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.12;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@bitdsm/interfaces/IBitcoinPod.sol";
-import "@bitdsm/interfaces/IBitcoinPodManager.sol";
+import "@bitdsm/core/BitcoinPodManager.sol";
 import "@openzeppelin/contracts/interfaces/IERC1271.sol";
+import "@bitdsm/libraries/EIP1271SignatureUtils.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-contract BitcoinTimelockApp is Ownable, IERC1271 {
-    IBitcoinPodManager public immutable podManager;
+contract BitcoinTimeLockApp is Ownable, IERC1271 {
+    BitcoinPodManager public immutable podManager;
     
     // Mapping of pod address to unlock timestamp
     mapping(address => uint256) public podUnlockTimes;
@@ -16,24 +18,27 @@ contract BitcoinTimelockApp is Ownable, IERC1271 {
     event PodUnlocked(address indexed pod);
 
     // Add magic value constants for EIP-1271
-    bytes4 constant internal MAGICVALUE = 0x1626ba7e;
-    bytes4 constant internal INVALID_SIGNATURE = 0xffffffff;
+    bytes4 constant internal _MAGICVALUE = 0x1626ba7e;
+    bytes4 constant internal _INVALID_SIGNATURE = 0xffffffff;
 
-    constructor(address _podManager) {
-        podManager = IBitcoinPodManager(_podManager);
+    constructor(address _podManager, address _initialOwner) {
+        podManager = BitcoinPodManager(_podManager);
+        require(_initialOwner != address(0), "Invalid address");
+        _transferOwnership(_initialOwner);
     }
 
     function lockPodUntil(address pod, uint256 unlockTime) external {
         // Instead of checking owner, check if pod is delegated to this app
-        require(IBitcoinPodManager(podManager).podToApp(pod) == address(this), "Pod not delegated to this app");
+        require(podManager.podToApp(pod) == address(this), "Pod not delegated to this app");
         require(unlockTime > block.timestamp, "Unlock time must be in future");
         
         podUnlockTimes[pod] = unlockTime;
-        IBitcoinPodManager(podManager).lockPod(pod);
+        podManager.lockPod(pod);
     }
 
     function unlockPod(address pod) external {
         require(block.timestamp >= podUnlockTimes[pod], "Time lock not expired");
+        require(msg.sender == podManager.owner(), "Not pod owner");
         
         podManager.unlockPod(pod);
         delete podUnlockTimes[pod];
@@ -41,7 +46,7 @@ contract BitcoinTimelockApp is Ownable, IERC1271 {
         emit PodUnlocked(pod);
     }
 
-    // Add isValidSignature function for EIP-1271
+    // Overrides the isValidSignature function for EIP-1271
     function isValidSignature(bytes32 _hash, bytes memory _signature) 
         external 
         view 
@@ -49,28 +54,12 @@ contract BitcoinTimelockApp is Ownable, IERC1271 {
         returns (bytes4) 
     {
         // Recover the signer from the signature
-        (bytes32 r, bytes32 s, uint8 v) = splitSignature(_signature);
-        address signer = ecrecover(_hash, v, r, s);
-        
+        address signer = ECDSA.recover(_hash, _signature);
         // Check if the signer is the owner
         if (signer == owner()) {
-            return MAGICVALUE;
+            return _MAGICVALUE;
         }
-        return INVALID_SIGNATURE;
+        return _INVALID_SIGNATURE;
     }
 
-    // Helper function to split signature
-    function splitSignature(bytes memory sig)
-        internal
-        pure
-        returns (bytes32 r, bytes32 s, uint8 v)
-    {
-        require(sig.length == 65, "Invalid signature length");
-
-        assembly {
-            r := mload(add(sig, 32))
-            s := mload(add(sig, 64))
-            v := byte(0, mload(add(sig, 96)))
-        }
-    }
 }

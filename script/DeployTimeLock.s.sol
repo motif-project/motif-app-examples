@@ -7,7 +7,7 @@ import "@bitdsm/core/AppRegistry.sol";
 
 contract DeployTimeLock is Script {
     address constant BITCOIN_POD_MANAGER = 0x78A618ef70dF03104D55D84E8EB2100A869c1a45;
-    address constant APP_REGISTRY = 0x67fF1A0f47Ba0e7b4D2c96546F97EaACc9Db129E;
+    address constant APP_REGISTRY = 0xF4E2f70806628040C19BC041192Be7F2C798AA9E;
 
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
@@ -34,6 +34,7 @@ contract DeployTimeLock is Script {
         // Try to read the digest hash with try/catch
         try IAppRegistry(APP_REGISTRY).calculateAppRegistrationDigestHash(
             address(timelock),
+            address(APP_REGISTRY),
             salt,
             expiry
         ) returns (bytes32 digestHash) {

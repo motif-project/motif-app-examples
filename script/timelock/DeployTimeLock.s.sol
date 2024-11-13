@@ -2,7 +2,7 @@
 pragma solidity ^0.8.12;
 
 import "forge-std/Script.sol";
-import "../src/timelock/BitcoinTimeLockApp.sol";
+import "../../src/timelock/BitcoinTimeLockApp.sol";
 
 contract DeployTimeLock is Script {
     

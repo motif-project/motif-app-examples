@@ -10,7 +10,7 @@ import "@bitdsm/libraries/EIP1271SignatureUtils.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract BitcoinTimeLockApp is Ownable, IERC1271 {
-    address public immutable podManager;
+    IBitcoinPodManager public immutable podManager;
     
     // Mapping of pod address to unlock timestamp
     mapping(address => uint256) public podUnlockTimes;
@@ -23,28 +23,28 @@ contract BitcoinTimeLockApp is Ownable, IERC1271 {
     bytes4 constant internal _INVALID_SIGNATURE = 0xffffffff;
 
     constructor(address _podManager, address _initialOwner) {
-        podManager = _podManager;
+        podManager = IBitcoinPodManager(_podManager);
         require(_initialOwner != address(0), "Invalid address");
         _transferOwnership(_initialOwner);
     }
     // locks already delegated pod for time lock 
     function lockPodUntil(address pod, uint256 unlockTime) external {
         // Instead of checking owner, check if pod is delegated to this app
-        require(IBitcoinPodManager(podManager).getPodApp(pod) == address(this), "Pod not delegated to this app");
+        require(podManager.getPodApp(pod) == address(this), "Pod not delegated to this app");
         // check if app is locked
         require(unlockTime > block.timestamp, "Unlock time must be in future");
         
         podUnlockTimes[pod] = unlockTime;
-        IBitcoinPodManager(podManager).lockPod(pod);
+        podManager.lockPod(pod);
     }
     // sent from client
     // unlocks pod if time lock has expired
     function unlockPod(address pod) external {
-        require(IBitcoinPodManager(podManager).getPodApp(pod) == address(this), "Pod not delegated to this app");
+        require(podManager.getPodApp(pod) == address(this), "Pod not delegated to this app");
         require(block.timestamp >= podUnlockTimes[pod], "Time lock not expired");
         
         
-        IBitcoinPodManager(podManager).unlockPod(pod);
+        podManager.unlockPod(pod);
         delete podUnlockTimes[pod];
         
         emit PodUnlocked(pod);

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Script, console} from "forge-std/Script.sol";
-import {BitcoinTimeLockApp} from "../src/timelock/BitcoinTimeLockApp.sol";
+import {BitcoinTimeLockApp} from "../../src/timelock/BitcoinTimeLockApp.sol";
 import {IAppRegistry} from "@bitdsm/interfaces/IAppRegistry.sol";
 
 // Declaring contract addresses deployed on Holesky

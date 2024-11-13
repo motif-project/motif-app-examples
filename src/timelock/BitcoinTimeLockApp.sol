@@ -3,13 +3,14 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@bitdsm/interfaces/IBitcoinPod.sol";
-import "@bitdsm/core/BitcoinPodManager.sol";
+import "@bitdsm/interfaces/IBitcoinPodManager.sol";
+import "@bitdsm/interfaces/IAppRegistry.sol";
 import "@openzeppelin/contracts/interfaces/IERC1271.sol";
 import "@bitdsm/libraries/EIP1271SignatureUtils.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract BitcoinTimeLockApp is Ownable, IERC1271 {
-    BitcoinPodManager public immutable podManager;
+    address public immutable podManager;
     
     // Mapping of pod address to unlock timestamp
     mapping(address => uint256) public podUnlockTimes;
@@ -22,25 +23,28 @@ contract BitcoinTimeLockApp is Ownable, IERC1271 {
     bytes4 constant internal _INVALID_SIGNATURE = 0xffffffff;
 
     constructor(address _podManager, address _initialOwner) {
-        podManager = BitcoinPodManager(_podManager);
+        podManager = _podManager;
         require(_initialOwner != address(0), "Invalid address");
         _transferOwnership(_initialOwner);
     }
-
+    // locks already delegated pod for time lock 
     function lockPodUntil(address pod, uint256 unlockTime) external {
         // Instead of checking owner, check if pod is delegated to this app
-        require(podManager.podToApp(pod) == address(this), "Pod not delegated to this app");
+        require(IBitcoinPodManager(podManager).getPodApp(pod) == address(this), "Pod not delegated to this app");
+        // check if app is locked
         require(unlockTime > block.timestamp, "Unlock time must be in future");
         
         podUnlockTimes[pod] = unlockTime;
-        podManager.lockPod(pod);
+        IBitcoinPodManager(podManager).lockPod(pod);
     }
-
+    // sent from client
+    // unlocks pod if time lock has expired
     function unlockPod(address pod) external {
+        require(IBitcoinPodManager(podManager).getPodApp(pod) == address(this), "Pod not delegated to this app");
         require(block.timestamp >= podUnlockTimes[pod], "Time lock not expired");
-        require(msg.sender == podManager.owner(), "Not pod owner");
         
-        podManager.unlockPod(pod);
+        
+        IBitcoinPodManager(podManager).unlockPod(pod);
         delete podUnlockTimes[pod];
         
         emit PodUnlocked(pod);
@@ -60,6 +64,15 @@ contract BitcoinTimeLockApp is Ownable, IERC1271 {
             return _MAGICVALUE;
         }
         return _INVALID_SIGNATURE;
+    }
+
+    // updateAppMetadata
+    function updateAppMetadataURI(string calldata metadataURI, address appRegistry) external 
+    {
+        // check if app is registered
+        require(IAppRegistry(appRegistry).isAppRegistered(address(this)), "App not registered");
+        // update metadataURI
+        IAppRegistry(appRegistry).updateAppMetadataURI(metadataURI);
     }
 
 }

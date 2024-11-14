@@ -4,7 +4,7 @@ The following instructions explain how to manually deploy the Example from scrat
 
 This section describes the tooling required for local development.
 
-### Non-Nix Environment
+### 1. Non-Nix Environment
 
 Install dependencies:
 
@@ -16,22 +16,20 @@ Install dependencies:
 - [Foundry](https://getfoundry.sh/)
 - [ethers](https://www.npmjs.com/package/ethers)
 
-### Deploy Eigenlayer Contracts
+### 2. Deploy Eigenlayer Contracts
 
-Open a terminal window, execute the following commands
+First, clone the hello-world-avs repository:
 
-Clone the hello-world-avs repo
-
-```
+```bash
 git clone git@github.com:Layr-Labs/hello-world-avs.git
+cd hello-world-avs
 ```
 
-### Start Anvil Chain
+### 3. Start Anvil Chain on new terminal
 
 In terminal window #1, execute the following commands:
 
-```sh
-
+```bash
 # Install npm packages
 npm install
 
@@ -39,4 +37,38 @@ npm install
 npm run start:anvil
 ```
 
-In an seperate terminal window, execute the following commands:
+In a separate terminal window, execute the following commands:
+
+```sh
+# Setup .env file
+cp .env.example .env
+
+cp contracts/.env.example contracts/.env
+
+cd contracts/anvil
+```
+
+then run the below command
+
+```sh
+cd contracts
+forge build
+```
+
+then cd to anvil directory
+
+```sh
+cd anvil
+```
+
+and run the below command
+
+```sh
+./deploy-el.sh
+
+```
+
+this will deploy the EigenLayer contracts.
+
+then copy proxyAdmin, delegation, and avsDirectory addresses from contracts/deployments/core/31337.json file and update the eigenlayer_addresses.json file with these addresses.
+Note: leave the rewardsCoordinator address same as the one in the eigenlayer_addresses.json file.

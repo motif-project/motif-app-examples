@@ -28,6 +28,9 @@ To Create a New Oracle refer to the below solidity code snippet:
 
 ### 2. Deploy CDP
 Once the Oracle is deployed, you can deploy the CDP contract by referring to the below solidity code snippet:
+#### Parameters:
+- `_BITCOIN_POD_MANAGER`: The address of the Bitcoin Pod we want to register with.
+- `OracleAddress`: The address of the Oracle we deployed on last step.
 
 ```solidity
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
@@ -35,12 +38,10 @@ Once the Oracle is deployed, you can deploy the CDP contract by referring to the
         CDP cdp = new CDP(_BITCOIN_POD_MANAGER, _ORACLE);
 ```
 
-where `_BITCOIN_POD_MANAGER` is the address of the Bitcoin Pod Manager contract you want to use and `_ORACLE` is the address of the Oracle contract.
-
 
 ### 3. Register App
 
-To register your application, you'll need to call the `registerApp` function with your app's address and metadata URI
+To register your application, you'll need to call the `registerApp` function with your app's address
 
 #### Parameters:
 - `appAddress`: The contract address of your application
@@ -109,6 +110,10 @@ then you can update the metadata URI by calling the `updateAppMetadataURI` funct
 ### 5. Deregister App
 
 To deregister your app, you need to call the `deregisterApp` function from the BitDSMRegistry contract.
+
+#### Parameters:
+- `appAddress`: The contract address of your application
+- `AppRegistry`: The address of the BitDSMRegistry contract
 
 ```solidity
     AppRegistry(_APP_REGISTRY).deregisterApp(_APP_ADDRESS);

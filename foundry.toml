@@ -21,6 +21,8 @@ evm_version = "cancun"
 
 
 fs_permissions = [
-    { access = "read", path = "./script/anvil-testnet/" },
-    { access = "write", path = "./script/anvil-testnet/bitdsm_addresses.json" },
+    { access = "read-write", path = "./script/anvil-testnet/" },
+    { access = "read-write", path = "./script/anvil-testnet/bitdsm_addresses.json" },
+    { access = "read-write", path = "./.env" },
+    { access = "read-write", path = "./script/anvil-testnet/cdp-addresses.json" },
 ]

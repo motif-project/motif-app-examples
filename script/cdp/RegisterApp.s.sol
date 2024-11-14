@@ -4,13 +4,16 @@ pragma solidity ^0.8.13;
 import {Script, console} from "forge-std/Script.sol";
 import {CDP} from "../../src/cdp/Cdp.sol";
 import {AppRegistry} from "@bitdsm/core/AppRegistry.sol";
+import {stdJson} from "forge-std/StdJson.sol";
 
-// Declaring contract addresses deployed on Holesky
-address constant _APP_REGISTRY = 0xCace1b78160AE76398F486c8a18044da0d66d86D;
-address constant _APP_ADDRESS = 0x276C216D241856199A83bf27b2286659e5b877D3; // your deployed App address
-
+// to deploy on local
 // forge script script/cdp/RegisterApp.s.sol:RegisterApp --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+
+// to deploy on holesky
+// forge script script/cdp/RegisterApp.s.sol:RegisterApp --fork-url https://1rpc.io/holesky --broadcast --private-key $DEPLOYER_PRIVATE_KEY
 contract RegisterApp is Script {
+    address internal _APP_REGISTRY;
+    address internal _APP_ADDRESS;
     CDP public app;
     // verify if AppRegistry is initialized
     function verifyOwnership() public view returns (bool) {
@@ -26,15 +29,38 @@ contract RegisterApp is Script {
             return false;
         }
     }
+
+    function setUp() public {
+        // Check if we're on local network (anvil)
+        if (block.chainid == 31337) {
+            string memory bitdsmRoot = vm.readFile(
+                "script/anvil-testnet/bitdsm_addresses.json"
+            );
+            string memory cdpRoot = vm.readFile(
+                "script/anvil-testnet/cdp-addresses.json"
+            );
+
+            _APP_REGISTRY = stdJson.readAddress(
+                bitdsmRoot,
+                "$.AppRegistryProxy"
+            );
+            _APP_ADDRESS = stdJson.readAddress(cdpRoot, "$.cdp");
+        } else {
+            // For other networks, use hardcoded addresses
+            _APP_REGISTRY = 0x91677dD787cd9056c5805cBb74e271Fd83d88E61; // replace with your registry address
+            _APP_ADDRESS = 0x58C3a95F687B9C707C4d36a57EF680D765D28d45; // replace with your CDP address
+        }
+    }
     function run() external {
         // needed for signing the message for registration.
         // should be the same as the owner of the TimeLockApp contract
+
         uint256 deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
         address deployer = vm.addr(deployerPrivateKey);
         // check if the app owner matches the signer
-        // if (CDP(_APP_ADDRESS).owner() != deployer) {
-        //     revert("App owner does not match the signer");
-        // }
+        if (CDP(_APP_ADDRESS).owner() != deployer) {
+            revert("App owner does not match the signer");
+        }
         // check if AppRegistry is initialized
         if (!verifyOwnership()) {
             revert("AppRegistry not initialized");
@@ -67,21 +93,21 @@ contract RegisterApp is Script {
             bytes memory signature = abi.encodePacked(r, s, v);
 
             // lets verify the signature locally
-            // try app.isValidSignature(digestHash, signature) returns (
-            //     bytes4 magicValue
-            // ) {
-            //     console.log(
-            //         "\nSignature verification result:",
-            //         vm.toString(magicValue)
-            //     );
-            //     require(
-            //         magicValue == 0x1626ba7e,
-            //         "Signature verification failed locally"
-            //     );
-            // } catch Error(string memory reason) {
-            //     console.log("\nLocal signature verification failed:", reason);
-            //     revert("Local signature verification failed");
-            // }
+            try app.isValidSignature(digestHash, signature) returns (
+                bytes4 magicValue
+            ) {
+                console.log(
+                    "\nSignature verification result:",
+                    vm.toString(magicValue)
+                );
+                require(
+                    magicValue == 0x1626ba7e,
+                    "Signature verification failed locally"
+                );
+            } catch Error(string memory reason) {
+                console.log("\nLocal signature verification failed:", reason);
+                revert("Local signature verification failed");
+            }
             // if verification passed, register the app
             AppRegistry(_APP_REGISTRY).registerApp(
                 _APP_ADDRESS,
@@ -96,7 +122,7 @@ contract RegisterApp is Script {
             console.log("Failed to calculate digest (no reason)");
         }
         app.updateAppMetadataURI(
-            "https://raw.githubusercontent.com/usmanshahid86/bodNode_EigenLayer/refs/heads/main/metadata.json",
+            "https://raw.githubusercontent.com/shanu516516/App-metadata/refs/heads/main/cdp_meta.json",
             _APP_REGISTRY
         );
         vm.stopBroadcast();

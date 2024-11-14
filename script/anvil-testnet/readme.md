@@ -82,15 +82,28 @@ forge build
 
 # Deploy BitDSM contracts
 forge script script/anvil-testnet/DeployBitDSM.s.sol:DeployBitDSM --sig "run(string,string)" "anvil" " " --rpc-url http://localhost:8545 --broadcast
+```
 
-# Deploy Oracle
-forge script script/cdp/Oracle.s.sol:OracleScript --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+Now to deploy the cdp contract
 
+```bash
 # Deploy CDP
 forge script script/cdp/Cdp.s.sol:DeployCDP --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+```
 
+and then register the application, run the following command
+
+```bash
 # Register Application
 forge script script/cdp/RegisterApp.s.sol:RegisterApp --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+```
+
+then run the CdpController.s.sol to interact with the cdp contract.
+for interacting with the Cdp app, user need to first delegate the app from bitcoin pod manager. then run the following command to open cdp
+
+```bash
+# Deploy CdpController
+forge script script/cdp/CdpController.s.sol:MockBitcoinPodManagerScript --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
 ```
 
 ## Notes

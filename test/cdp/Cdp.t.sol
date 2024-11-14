@@ -32,7 +32,6 @@ contract CdpTest is Test, MockAppRegistry {
     function setUp() public {
         manager = address(0x1);
         user = address(0x2);
-        console2.log("user public key", vm.addr(0x2));
         vm.deal(manager, 100 ether);
         vm.deal(user, 100 ether);
         oracle = new MockOracle();
@@ -56,30 +55,7 @@ contract CdpTest is Test, MockAppRegistry {
 
     function testOpenCDP() public {
         vm.startPrank(user);
-        // console2.log("price", oracle.getLatestPrice(priceFeed));
-        // console2.log("user", user);
-        // console2.log("manager", manager);
-        // console2.log("pod address", mockBitcoinPod);
-        // console2.log("pod owner", MockBitcoinPod(mockBitcoinPod).owner());
-        // console2.log("msg.sender", msg.sender);
-        // console2.log("cdp", address(cdp));
-        // console2.log("mockBitcoinPodManager", mockBitcoinPodManager);
 
-        // console2.log(
-        //     "podToApp",
-        //     MockBitcoinPodManager(mockBitcoinPodManager).podToApp(
-        //         mockBitcoinPod
-        //     )
-        // );
-        // console2.log(
-        //     "userToPod",
-        //     MockBitcoinPodManager(mockBitcoinPodManager).userToPod(user)
-        // );
-        // console2.log(
-        //     "is delegated",
-        //     MockBitcoinPodManager(mockBitcoinPodManager).podToApp(pod)
-        // );
-        // vm.warp(block.timestamp + 1 days);
         uint256 collateralAmount = MockBitcoinPod(mockBitcoinPod)
             .getBitcoinBalance();
         // get debt of 5000USD or 500000 cents
@@ -161,5 +137,13 @@ contract CdpTest is Test, MockAppRegistry {
         cdp.openCDP(500000000);
         uint256 collateralRatio = cdp.getCollateralRatio(user);
         assertEq(collateralRatio, 156000000);
+    }
+
+    function testGetCDP() public {
+        vm.startPrank(user);
+        cdp.openCDP(500000000);
+        (uint256 collateral, uint256 debt, ) = cdp.getCDP(user);
+        assertEq(collateral, 100000000);
+        assertEq(debt, 500000000);
     }
 }

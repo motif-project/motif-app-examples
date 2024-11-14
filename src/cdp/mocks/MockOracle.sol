@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+// solhint-disable-next-line
+// solhint-disable no-empty-blocks, no-unused-vars, const-name-snakecase
 pragma solidity ^0.8.0;
 
 import "../interfaces/IOracle.sol";

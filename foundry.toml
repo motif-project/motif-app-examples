@@ -5,7 +5,7 @@ libs = ["lib"]
 remappings = [
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
     "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
-    "@bitdsm/=lib/BitDSM/src/"
+    "@bitdsm/=lib/BitDSM/src/",
 ]
 # A list of ignored solc error codes
 
@@ -18,3 +18,9 @@ via_ir = false
 # Override the Solidity version (this overrides `auto_detect_solc`)
 solc_version = '0.8.25'
 evm_version = "cancun"
+
+
+fs_permissions = [
+    { access = "read", path = "./script/anvil-testnet/" },
+    { access = "write", path = "./script/anvil-testnet/bitdsm_addresses.json" },
+]

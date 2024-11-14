@@ -50,7 +50,10 @@ contract DeployBitDSM is Script {
     BitDSMImplementationAddresses public bitDSMImplementationAddresses;
     function _loadEigenlayerAddresses(string memory targetEnv) internal {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "./eigenlayer_addresses.json");
+        string memory path = string.concat(
+            root,
+            "/script/anvil-testnet/eigenlayer_addresses.json"
+        );
         string memory json = vm.readFile(path);
 
         avsDirectory = IAVSDirectory(
@@ -261,7 +264,7 @@ contract DeployBitDSM is Script {
         string memory root = vm.projectRoot();
         string memory path = string.concat(
             root,
-            "/script/bitdsm_addresses.json"
+            "/script/anvil-testnet/bitdsm_addresses.json"
         );
 
         string memory json = string.concat(

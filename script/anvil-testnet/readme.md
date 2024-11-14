@@ -70,5 +70,8 @@ and run the below command
 
 this will deploy the EigenLayer contracts.
 
-then copy proxyAdmin, delegation, and avsDirectory addresses from contracts/deployments/core/31337.json file and update the eigenlayer_addresses.json file with these addresses.
-Note: leave the rewardsCoordinator address same as the one in the eigenlayer_addresses.json file.
+then copy proxyAdmin, delegation, and avsDirectory addresses from contracts/deployments/core/31337.json file and update the anvil object fields in script/anvil-testnet/eigenlayer_addresses.json file with these addresses.
+
+Note: leave the rewardsCoordinator address same as the one in the eigenlayer_addresses.json file. and copy the delegation address in delegationManager field.
+
+orge script script/anvil-testnet/DeployBitDSM.s.sol:DeployBitDSM --sig "run(string,string)" "anvil" " " --rpc-url http://localhost:8545 --broadcast

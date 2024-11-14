@@ -74,4 +74,4 @@ then copy proxyAdmin, delegation, and avsDirectory addresses from contracts/depl
 
 Note: leave the rewardsCoordinator address same as the one in the eigenlayer_addresses.json file. and copy the delegation address in delegationManager field.
 
-orge script script/anvil-testnet/DeployBitDSM.s.sol:DeployBitDSM --sig "run(string,string)" "anvil" " " --rpc-url http://localhost:8545 --broadcast
+forge script script/anvil-testnet/DeployBitDSM.s.sol:DeployBitDSM --sig "run(string,string)" "anvil" " " --rpc-url http://localhost:8545 --broadcast

@@ -1,14 +1,14 @@
 The following instructions explain how to manually deploy the Example from scratch including EigenLayer and BitDSM specific contracts using Foundry (forge) to a local anvil chain, and start Typescript Operator application and tasks.
 
-## Development Environment
+# Local Deployment Guide
 
-This section describes the tooling required for local development.
+This guide explains how to deploy the Example project locally using Foundry (forge), including EigenLayer and BitDSM contracts. It also covers setting up the Typescript Operator application and tasks.
 
-### 1. Non-Nix Environment
+## Prerequisites
 
-Install dependencies:
+### Required Tools
 
-- [Node](https://nodejs.org/en/download/)
+- [Node.js](https://nodejs.org/en/download/)
 - [Typescript](https://www.typescriptlang.org/download)
 - [ts-node](https://www.npmjs.com/package/ts-node)
 - [tcs](https://www.npmjs.com/package/tcs#installation)
@@ -16,62 +16,85 @@ Install dependencies:
 - [Foundry](https://getfoundry.sh/)
 - [ethers](https://www.npmjs.com/package/ethers)
 
-### 2. Deploy Eigenlayer Contracts
+## Deployment Steps
 
-First, clone the hello-world-avs repository:
+### 1. Initial Setup
 
 ```bash
+# Clone the repository
 git clone git@github.com:Layr-Labs/hello-world-avs.git
 cd hello-world-avs
+
+# Install dependencies
+npm install
 ```
 
-### 3. Start Anvil Chain on new terminal
+### 2. Start Local Anvil Chain
 
-In terminal window #1, execute the following commands:
+In a new terminal window:
 
 ```bash
-# Install npm packages
-npm install
-
-# Start local anvil chain
 npm run start:anvil
 ```
 
-In a separate terminal window, execute the following commands:
+### 3. Deploy EigenLayer Contracts
 
-```sh
-# Setup .env file
+```bash
+# Set up environment files
 cp .env.example .env
-
 cp contracts/.env.example contracts/.env
 
-cd contracts/anvil
-```
-
-then run the below command
-
-```sh
+# Build and deploy contracts
 cd contracts
 forge build
-```
-
-then cd to anvil directory
-
-```sh
 cd anvil
-```
-
-and run the below command
-
-```sh
 ./deploy-el.sh
-
 ```
 
-this will deploy the EigenLayer contracts.
+### 4. Configure BitDSM Setup
 
-then copy proxyAdmin, delegation, and avsDirectory addresses from contracts/deployments/core/31337.json file and update the anvil object fields in script/anvil-testnet/eigenlayer_addresses.json file with these addresses.
+```bash
+# Clone BitDSM repository (if not already done)
+git clone git@github.com:BitDSM/BitDSM-examples.git
+cd BitDSM-examples
 
-Note: leave the rewardsCoordinator address same as the one in the eigenlayer_addresses.json file. and copy the delegation address in delegationManager field.
+# Set up environment files
+cp .env.example .env
+cp script/anvil-testnet/.env.example script/anvil-testnet/.env
+```
 
+Important:
+
+1. Copy the following addresses from `contracts/deployments/core/31337.json`:
+   - proxyAdmin
+   - delegation
+   - avsDirectory
+2. Update these addresses in `script/anvil-testnet/eigenlayer_addresses.json`
+   - Keep the existing rewardsCoordinator address
+   - Use the delegation address for the delegationManager field
+3. Update your private key in the `.env` file
+
+### 5. Deploy BitDSM Contracts
+
+```bash
+# Build contracts
+forge build
+
+# Deploy BitDSM contracts
 forge script script/anvil-testnet/DeployBitDSM.s.sol:DeployBitDSM --sig "run(string,string)" "anvil" " " --rpc-url http://localhost:8545 --broadcast
+
+# Deploy Oracle
+forge script script/cdp/Oracle.s.sol:OracleScript --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+
+# Deploy CDP
+forge script script/cdp/Cdp.s.sol:DeployCDP --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+
+# Register Application
+forge script script/cdp/RegisterApp.s.sol:RegisterApp --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+```
+
+## Notes
+
+- Ensure all services are running before proceeding with each step
+- Keep track of deployed contract addresses for future reference
+- Make sure your local environment meets all prerequisites before starting

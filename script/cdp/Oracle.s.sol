@@ -4,6 +4,8 @@ pragma solidity ^0.8.0;
 import {Script} from "forge-std/Script.sol";
 import {Oracle} from "../../src/cdp/Oracle.sol";
 import {console} from "forge-std/console.sol";
+
+//forge script script/cdp/Oracle.s.sol:OracleScript --rpc-url http://localhost:8545 --broadcast
 contract OracleScript is Script {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");

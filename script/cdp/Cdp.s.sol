@@ -5,11 +5,11 @@ import {Script, console} from "forge-std/Script.sol";
 
 import {CDP} from "../../src/cdp/Cdp.sol";
 
-// forge script script/cdp/Cdp.s.sol:DeployCDP --fork-url $RPC_URL --broadcast --private-key $PRIVATE_KEY
+// forge script script/cdp/Cdp.s.sol:DeployCDP --rpc-url $RPC_URL --broadcast --private-key $PRIVATE_KEY
 contract DeployCDP is Script {
     address constant _BITCOIN_POD_MANAGER =
-        0x809d550fca64d94Bd9F66E60752A544199cfAC3D;
-    address constant _ORACLE = 0x851356ae760d987E095750cCeb3bC6014560891C;
+        0x34B40BA116d5Dec75548a9e9A8f15411461E8c70;
+    address constant _ORACLE = 0xfaAddC93baf78e89DCf37bA67943E1bE8F37Bb8c;
 
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");

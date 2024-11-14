@@ -6,10 +6,10 @@ import {CDP} from "../../src/cdp/Cdp.sol";
 import {AppRegistry} from "@bitdsm/core/AppRegistry.sol";
 
 // Declaring contract addresses deployed on Holesky
-address constant _APP_REGISTRY = 0x0E801D84Fa97b50751Dbf25036d067dCf18858bF;
-address constant _APP_ADDRESS = 0xb7278A61aa25c888815aFC32Ad3cC52fF24fE575; // your deployed App address
+address constant _APP_REGISTRY = 0xCace1b78160AE76398F486c8a18044da0d66d86D;
+address constant _APP_ADDRESS = 0x276C216D241856199A83bf27b2286659e5b877D3; // your deployed App address
 
-// forge script script/cdp/RegisterApp.s.sol:RegisterApp --fork-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+// forge script script/cdp/RegisterApp.s.sol:RegisterApp --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
 contract RegisterApp is Script {
     CDP public app;
     // verify if AppRegistry is initialized

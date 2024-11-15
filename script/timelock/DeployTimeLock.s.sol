@@ -6,7 +6,7 @@ import "../../src/timelock/BitcoinTimeLockApp.sol";
 
 contract DeployTimeLock is Script {
     
-    address constant _BITCOIN_POD_MANAGER = 0x3FAB0A58446da7a0703c0856A7c05abfa5a0F964;
+    address constant _BITCOIN_POD_MANAGER = 0x96EAE70bC21925DdE05602c87c4483579205B1F6;
 
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");

@@ -4,7 +4,9 @@ Main repo for the examples apps that could be built on top of BitDSM protocol fo
 
 ## CDP (Collateralized Debt Position) Contract
 
-This example demonstrates how to build a simple CDP (Collateralized Debt Position) contract using BitDSM protocol. The CDP contract allows users to use their locked Bitcoin in bitcoin pods as collateral and borrow against it.
+This example demonstrates how to build a simple CDP (Collateralized Debt Position) contract using BitDSM protocol. This Document focuses on deploying and development on holesky chain with a full operator running.
+
+For local deployment for development purposes refer to [Local Deployment](https://github.com/BitDSM/BitDSM-examples/blob/main/script/anvil-testnet/readme.md)
 
 ## Setup
 

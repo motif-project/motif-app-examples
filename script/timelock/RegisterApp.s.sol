@@ -6,7 +6,7 @@ import {BitcoinTimeLockApp} from "../../src/timelock/BitcoinTimeLockApp.sol";
 import {IAppRegistry} from "@bitdsm/interfaces/IAppRegistry.sol";
 
 // Declaring contract addresses deployed on Holesky
-address constant _APP_REGISTRY = 0xF4E2f70806628040C19BC041192Be7F2C798AA9E;
+address constant _APP_REGISTRY = 0x91677dD787cd9056c5805cBb74e271Fd83d88E61;
 address constant _APP_ADDRESS = 0xE8626F6452CF09adf623663714c4F639bf13F65c;  // your deployed App address
 
 contract RegisterApp is Script {

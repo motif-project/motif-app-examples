@@ -81,12 +81,11 @@ Important:
 
 it looks like this
 
-````sh
+```sh
  "anvil": {
     "proxyAdmin": "..",
     "delegationManager": ......
-``
-
+```
 
 3. Update your private key in the `.env` file of BitDSM examples repository
 
@@ -96,7 +95,7 @@ first source the .env file to get the private key for updating the .env files
 
 ```bash
 source .env
-````
+```
 
 ```bash
 # Build contracts
@@ -159,3 +158,7 @@ forge script script/cdp/CdpController.s.sol:CdpControllerScript --rpc-url http:/
 - Keep track of deployed contract addresses
 - Verify all prerequisites are installed and configured correctly
 - The CDP operations require prior delegation from the bitcoin pod manager
+
+```
+
+```

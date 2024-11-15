@@ -20,7 +20,7 @@ let chainId = 31337;
 
 const avsDeploymentData = JSON.parse(
   fs.readFileSync(
-    path.resolve(__dirname, `../../../lib/BitDSM/script/bitdsm_addresses.json`),
+    path.resolve(__dirname, `../bitdsm_addresses.json`),
     "utf8"
   )
 );
@@ -31,6 +31,8 @@ const bitDSMPodMangerABI = JSON.parse(
     "utf8"
   )
 );
+
+
 
 const bitDSMServiceManagerAddress = avsDeploymentData.BitDSMServiceManagerProxy;
 const bitDSMServiceManagerABI = JSON.parse(
@@ -53,17 +55,32 @@ const ServiceManager = new ethers.Contract(
   wallet_opr
 );
 
+
+
 async function confirmBitcoinDeposit(
   podAddress: string,
   transactionId: string,
-  amount: number
+  amount: bigint
 ): Promise<boolean> {
+
+  const messageHash = ethers.keccak256(
+    ethers.solidityPacked(
+      ['address', 'address', 'uint256', 'bytes32', 'bool'],
+      [
+        podAddress,
+        wallet_opr.address,
+        amount,
+        transactionId,
+        true
+      ]
+    )
+  );
+console.log("Message hash:", messageHash);
+ const messageBytes = ethers.getBytes(messageHash);
+ const signature = await wallet_opr.signMessage(messageBytes);
+ console.log("Signature:", signature);
   try {
-    const tx = await ServiceManager.confirmDeposit(
-      podAddress,
-      transactionId,
-      amount
-    );
+    const tx = await ServiceManager.confirmDeposit(podAddress, signature);
     const receipt = await tx.wait();
     console.log("Transaction confirmed: ${receipt.hash}");
     return true;
@@ -86,25 +103,27 @@ async function createNewPod(): Promise<string> {
       try {
         const parsedLog = iface.parseLog(log);
         if (parsedLog?.name === "PodCreated") {
-          const podAddress = parsedLog.args.pod; // or whatever the parameter name is in your event
+          const podAddress = parsedLog.args.pod;
           console.log("Pod Address:", podAddress);
           return podAddress;
         }
       } catch (e) {
-        continue; // Skip logs that can't be parsed
+        continue;
       }
     }
-    return receipt.logs[0].args.pod;
+    // Move this line inside the first try block, after the for loop
+    throw new Error("Pod address not found in transaction logs");
   } catch (error) {
     console.error("Error sending transaction:", error);
-    throw error; // Add this line to properly handle errors
+    throw error;
   }
 }
+
 
 async function verifyBitcoinDeposit(
   podAddr: string,
   txHash: string,
-  amount: number
+  amount: bigint
 ): Promise<boolean> {
   try {
     const tx = await BodManager.verifyBitcoinDepositRequest(
@@ -124,23 +143,23 @@ async function verifyBitcoinDeposit(
 
 // Function to create a new task with a random name every 15 seconds
 async function CreatePodandDeposit() {
-  // let podAddress = await createNewPod();
-  // console.log("Pod Created : ", podAddress);
+  let podAddress = await createNewPod();
+  console.log("Pod Created : ", podAddress);
 
-  // let success = await verifyBitcoinDeposit(
-  //   podAddress,
-  //   "0xf21abe91dc7751516e22059abe925df95fa19a63669ed8a5b31f53312c3b59af",
-  //   10000
-  // );
-  // console.log("Confirm request sent");
+  let success = await verifyBitcoinDeposit(
+    podAddress,
+    "0xf21abe91dc7751516e22059abe925df95fa19a63669ed8a5b31f53312c3b59af",
+    BigInt(10000)
+  );
+  console.log("Confirm request sent");
   if (true) {
     await confirmBitcoinDeposit(
-      "0xa921d0Dd0F979dAFbf56176C419C7F923979Cc90",
+      podAddress,
       "0xf21abe91dc7751516e22059abe925df95fa19a63669ed8a5b31f53312c3b59af",
-      10000
+      BigInt(10000)
     );
   } else {
-    console.error("Verify Bitcoin Transaction Failed");
+    console.error("confirm Bitcoin Transaction Failed");
   }
   console.log("Confirmed Deposit");
 }

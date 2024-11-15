@@ -101,13 +101,35 @@ forge script script/cdp/RegisterApp.s.sol:RegisterApp --rpc-url http://localhost
 then run the CdpController.s.sol to interact with the cdp contract.
 for interacting with the Cdp app, user need to first delegate the app from bitcoin pod manager. then run the following command to open cdp
 
-```bash
-# Deploy CdpController
-forge script script/cdp/CdpController.s.sol:MockBitcoinPodManagerScript --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
-```
-
 ## Notes
 
 - Ensure all services are running before proceeding with each step
 - Keep track of deployed contract addresses for future reference
 - Make sure your local environment meets all prerequisites before starting
+
+to register the operator, run the following command
+
+```bash
+cd script/anvil-testnet/operator
+npm install
+npm run start:operator
+```
+
+to create a pod, run the following command
+
+```bash
+npm run start:Pod
+
+```
+
+to delegate the app to the pod, run the following command
+
+```bash
+forge script script/cdp/CdpController.s.sol:DelegateCdpApp --rpc-url http://localhost:8545 --broadcast --private-key $CLIENT_PRIVATE_KEY
+```
+
+to open the cdp, run the following command
+
+```bash
+forge script script/cdp/CdpController.s.sol:CdpControllerScript --rpc-url http://localhost:8545 --broadcast --private-key $CLIENT_PRIVATE_KEY
+```

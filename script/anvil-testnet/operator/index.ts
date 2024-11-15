@@ -27,14 +27,14 @@ const coreDeploymentData = JSON.parse(
   fs.readFileSync(
     path.resolve(
       __dirname,
-      `../../../lib/BitDSM/script/eigenlayer_addresses.json`
+      `../eigenlayer_addresses.json`
     ),
     "utf8"
   )
 );
 const avsDeploymentData = JSON.parse(
   fs.readFileSync(
-    path.resolve(__dirname, `../../../lib/BitDSM/script/bitdsm_addresses.json`),
+    path.resolve(__dirname, `../bitdsm_addresses.json`),
     "utf8"
   )
 );
@@ -220,6 +220,7 @@ const registerOperator = async () => {
     );
     await tx2.wait();
     console.log("Operator registered on AVS successfully");
+    console.log("Operator address: ", wallet.address);
   }
 };
 

@@ -59,7 +59,7 @@ To register your application, you'll need to call the `registerApp` function wit
 - `appAddress`: The contract address of your application
 
 
-To register your app, you need the address to BitDSMRegistry contractand your Apps (in this case CDP) contract address
+To register your app, you need the address to `AppRegistry` contractand your Apps (in this case CDP) contract address
 
 Then Create a random salt and expiry
 ```solidity
@@ -67,7 +67,7 @@ Then Create a random salt and expiry
 uint256 expiry = block.timestamp + 1 days;
 ```
 
- Calculate the digest hash of the app registration by calling the `calculateAppRegistrationDigestHash` function from the BitDSMRegistry contract. Sign the digest hash and the broadcast the transaction.
+ Calculate the digest hash of the app registration by calling the `calculateAppRegistrationDigestHash` function from the `AppRegistry` contract. Sign the digest hash and the broadcast the transaction.
 
 ```solidity vm.startBroadcast(deployerPrivateKey);
 
@@ -96,7 +96,7 @@ uint256 expiry = block.timestamp + 1 days;
 
 ### 4. Update App Metadata
 
-Once the app is registered, you can update the app's metadata URI by calling the `updateAppMetadataURI` function from the BitDSMRegistry contract. It is recommended as the Metadata is displayed on the BitDSM UI.
+Once the app is registered, you can update the app's metadata URI by calling the `updateAppMetadataURI` function from the `AppRegistry` contract. It is recommended as the Metadata is displayed on the BitDSM UI.
 
 First you need upload the metadata.json file to IPFS and get the URI. 
 
@@ -108,7 +108,7 @@ Metadata JSON file example:
 }
 ```
 
-then you can update the metadata URI by calling the `updateAppMetadataURI` function from the BitDSMRegistry contract.
+then you can update the metadata URI by calling the `updateAppMetadataURI` function from the `AppRegistry` contract.
 
 ```solidity
     app = CDP(_APP_ADDRESS);
@@ -121,11 +121,11 @@ then you can update the metadata URI by calling the `updateAppMetadataURI` funct
 
 ### 5. Deregister App
 
-To deregister your app, you need to call the `deregisterApp` function from the BitDSMRegistry contract.
+To deregister your app, you need to call the `deregisterApp` function from the `AppRegistry` contract.
 
 #### Parameters:
 - `appAddress`: The contract address of your application
-- `AppRegistry`: The address of the BitDSMRegistry contract
+- `AppRegistry`: The address of the `AppRegistry` contract
 
 ```solidity
     AppRegistry(_APP_REGISTRY).deregisterApp(_APP_ADDRESS);

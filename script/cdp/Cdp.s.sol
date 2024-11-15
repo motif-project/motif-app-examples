@@ -5,6 +5,7 @@ import {Script, console} from "forge-std/Script.sol";
 import {Oracle} from "../../src/cdp/Oracle.sol";
 import {CDP} from "../../src/cdp/Cdp.sol";
 import {stdJson} from "forge-std/StdJson.sol";
+
 // to deploy on local
 // forge script script/cdp/Cdp.s.sol:DeployCDP --rpc-url $RPC_URL --broadcast --private-key $PRIVATE_KEY
 
@@ -36,7 +37,6 @@ contract DeployCDP is Script {
         console.log("CDP deployed at:", address(cdp));
 
         vm.stopBroadcast();
-        // Write deployment addresses to JSON file
         string memory deploymentData = string(
             abi.encodePacked(
                 '{"oracle":"',

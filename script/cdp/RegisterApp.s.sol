@@ -7,7 +7,7 @@ import {AppRegistry} from "@bitdsm/core/AppRegistry.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 
 // to deploy on local
-// forge script script/cdp/RegisterApp.s.sol:RegisterApp --rpc-url http://localhost:8545 --broadcast --private-key $PRIVATE_KEY
+// forge script script/cdp/RegisterApp.s.sol:RegisterApp --rpc-url http://localhost:8545 --broadcast --private-key $DEPLOYER_PRIVATE_KEY
 
 // to deploy on holesky
 // forge script script/cdp/RegisterApp.s.sol:RegisterApp --fork-url https://1rpc.io/holesky --broadcast --private-key $DEPLOYER_PRIVATE_KEY

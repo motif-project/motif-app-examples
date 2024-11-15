@@ -135,20 +135,7 @@ contract BitDSMServiceManagerScript is Script {
             .getBitcoinDepositRequest(_POD_ADDRESS);
 
         console.log("Request Amount:", request.amount);
-        //console.log("Transaction ID:", request.transactionId);
-        console.log("Is Pending:", request.isPending); // Create signature for deposit confirmation
-        // bytes32 messageHash = keccak256(
-        //     abi.encodePacked(
-        //         _POD_ADDRESS,
-        //         vm.addr(operatorPrivateKey),
-        //         request.amount, // Use amount from the struct
-        //         request.transactionId, // Use txId from the struct
-        //         request.isPending // Use isPending from the struct
-        //     )
-        // );
-        // bytes32 ethSignedMessageHash = keccak256(
-        //     abi.encodePacked("\x19Ethereum Signed Message:\n32", messageHash)
-        // );
+        console.log("Is Pending:", request.isPending);
 
         bytes32 messageHash = keccak256(
             abi.encodePacked(

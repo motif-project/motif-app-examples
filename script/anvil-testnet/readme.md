@@ -37,7 +37,11 @@ In a new terminal window:
 npm run start:anvil
 ```
 
+and note down the private key for updating your .env files
+
 ### 3. Deploy EigenLayer Contracts
+
+now go back to your original terminal and run the following commands
 
 ```bash
 # Set up environment files
@@ -60,21 +64,39 @@ cd BitDSM-examples
 
 # Set up environment files
 cp .env.example .env
-cp script/anvil-testnet/.env.example script/anvil-testnet/.env
+cp script/anvil-testnet/operator/.env.example script/anvil-testnet/operator/.env
 ```
+
+and update the .env file with the private key copied from anvil terminal. as anvil gives 10 accounts with different private keys. you can use any of them in your .env files and update the btc_public_key with the corresponding public key for that private key of bitcoin network
 
 Important:
 
-1. Copy the following addresses from `contracts/deployments/core/31337.json`:
+1. Copy the following addresses from `contracts/deployments/core/31337.json` located in the hello-world-avs contracts directory:
    - proxyAdmin
    - delegation
    - avsDirectory
-2. Update these addresses in `script/anvil-testnet/eigenlayer_addresses.json`
+2. Update these addresses in `script/anvil-testnet/eigenlayer_addresses.json` in anvil testnet object located in the last object of the file
    - Keep the existing rewardsCoordinator address
    - Use the delegation address for the delegationManager field
-3. Update your private key in the `.env` file
+
+it looks like this
+
+````sh
+ "anvil": {
+    "proxyAdmin": "..",
+    "delegationManager": ......
+``
+
+
+3. Update your private key in the `.env` file of BitDSM examples repository
 
 ### 5. Deploy BitDSM Contracts
+
+first source the .env file to get the private key for updating the .env files
+
+```bash
+source .env
+````
 
 ```bash
 # Build contracts
@@ -106,11 +128,13 @@ to register the operator, run the following command
 ```bash
 cd script/anvil-testnet/operator
 npm install
+source .env
 npm run start:operator
 ```
 
 to create a pod, run the following command
-Note : This is just to develop locally, in production, pod will be created but need to deposit the funds to the pod. then the operator will confirm the deposit
+Note : This is just to develop locally, in production, pod will be created but need to deposit the funds to the pod. then the operator will confirm the deposit.
+Remember to update the .env file for different CLIENT_PRIVATE_KEY for each new BitcoinPod
 
 ```bash
 npm run start:Pod

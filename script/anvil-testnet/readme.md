@@ -1,8 +1,8 @@
-The following instructions explain how to manually deploy the Example from scratch including EigenLayer and BitDSM specific contracts using Foundry (forge) to a local anvil chain, and start Typescript Operator application and tasks.
+The following instructions explain how to manually deploy the Example from scratch including EigenLayer and MOTIF specific contracts using Foundry (forge) to a local anvil chain, and start Typescript Operator application and tasks.
 
 # Local Deployment Guide
 
-This guide explains how to deploy the Example project locally using Foundry (forge), including EigenLayer and BitDSM contracts. It also covers setting up the Typescript Operator application and tasks.
+This guide explains how to deploy the Example project locally using Foundry (forge), including EigenLayer and MOTIF specific contracts. It also covers setting up the Typescript Operator application and tasks.
 
 ## Prerequisites
 
@@ -55,12 +55,12 @@ cd anvil
 ./deploy-el.sh
 ```
 
-### 4. Configure BitDSM Setup
+### 4. Configure Motif Setup
 
 ```bash
-# Clone BitDSM repository (if not already done)
-git clone git@github.com:BitDSM/BitDSM-examples.git
-cd BitDSM-examples
+# Clone Motif example app repository (if not already done)
+git clone git@github.com:motif-project/motif-app-examples.git
+cd motif-app-examples
 
 # Set up environment files
 cp .env.example .env
@@ -87,9 +87,9 @@ it looks like this
     "delegationManager": ......
 ```
 
-3. Update your private key in the `.env` file of BitDSM examples repository
+3. Update your private key in the `.env` file of Motif example app repository
 
-### 5. Deploy BitDSM Contracts
+### 5. Deploy Motif Contracts
 
 first source the .env file to get the private key for updating the .env files
 
@@ -102,7 +102,7 @@ source .env
 forge build
 
 # Deploy BitDSM contracts
-forge script script/anvil-testnet/DeployBitDSM.s.sol:DeployBitDSM --sig "run(string,string)" "anvil" " " --rpc-url http://localhost:8545 --broadcast
+forge script script/anvil-testnet/DeployMotif.s.sol:DeployMotif --sig "run(string,string)" "anvil" " " --rpc-url http://localhost:8545 --broadcast
 ```
 
 Now to deploy the cdp contract

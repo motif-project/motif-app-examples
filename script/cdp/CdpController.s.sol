@@ -7,8 +7,8 @@ import {Oracle} from "../../src/cdp/Oracle.sol";
 import {console} from "forge-std/console.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 import "../../src/cdp/Oracle.sol";
-import {IBitcoinPodManager} from "@bitdsm/interfaces/IBitcoinPodManager.sol";
-import {BitDSMServiceManager} from "@bitdsm/core/BitDSMServiceManager.sol";
+import {IBitcoinPodManager} from "@motif-contracts/core/BitcoinPodManager.sol";
+import {MotifServiceManager} from "@motif-contracts/core/MotifServiceManager.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 // forge script script/cdp/CdpController.s.sol:DelegateCdpApp --rpc-url http://localhost:8545 --broadcast --private-key $CLIENT_PRIVATE_KEY
@@ -18,11 +18,11 @@ contract DelegateCdpApp is Script {
 
     function setUp() public {
         // _BITCOIN_POD_MANAGER = 0x99bbA657f2BbC93c02D617f8bA121cB8Fc104Acf;
-        string memory bitdsmRoot = vm.readFile(
-            "script/anvil-testnet/bitdsm_addresses.json"
+        string memory motifRoot = vm.readFile(
+            "script/anvil-testnet/motif_addresses.json"
         );
         _BITCOIN_POD_MANAGER = stdJson.readAddress(
-            bitdsmRoot,
+            motifRoot,
             "$.BitcoinPodManagerProxy"
         );
         string memory cdpRoot = vm.readFile(
@@ -63,15 +63,15 @@ contract CdpControllerScript is Script {
 
     function setUp() public {
         // to get addresses from json files
-        string memory bitdsmRoot = vm.readFile(
-            "script/anvil-testnet/bitdsm_addresses.json"
+        string memory motifRoot = vm.readFile(
+            "script/anvil-testnet/motif_addresses.json"
         );
         string memory cdpRoot = vm.readFile(
             "script/anvil-testnet/cdp-addresses.json"
         );
 
         _BITCOIN_POD_MANAGER = stdJson.readAddress(
-            bitdsmRoot,
+            motifRoot,
             "$.BitcoinPodManagerProxy"
         );
         _APP_ADDRESS = stdJson.readAddress(cdpRoot, "$.cdp");
@@ -109,8 +109,8 @@ contract CdpControllerScript is Script {
     }
 }
 
-// forge script script/cdp/CdpController.s.sol:BitDSMServiceManagerScript --rpc-url http://localhost:8545 --broadcast --private-key $DEVELOPER_PRIVATE_KEY
-contract BitDSMServiceManagerScript is Script {
+// forge script script/cdp/CdpController.s.sol:MotifServiceManagerScript --rpc-url http://localhost:8545 --broadcast --private-key $DEVELOPER_PRIVATE_KEY
+contract MotifServiceManagerScript is Script {
     address internal _BITCOIN_POD_MANAGER;
     address internal _SERVICE_MANAGER;
     address internal _POD_ADDRESS;
@@ -124,7 +124,7 @@ contract BitDSMServiceManagerScript is Script {
     function run() external {
         uint256 operatorPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
         vm.startBroadcast(operatorPrivateKey);
-        BitDSMServiceManager serviceManager = BitDSMServiceManager(
+        MotifServiceManager serviceManager = MotifServiceManager(
             _SERVICE_MANAGER
         );
         IBitcoinPodManager podManager = IBitcoinPodManager(
@@ -156,7 +156,7 @@ contract BitDSMServiceManagerScript is Script {
         bytes memory signature = abi.encodePacked(r, s, v);
 
         // Call confirmDeposit on service manager
-        BitDSMServiceManager(_SERVICE_MANAGER).confirmDeposit(
+        MotifServiceManager(_SERVICE_MANAGER).confirmDeposit(
             _POD_ADDRESS,
             signature
         );

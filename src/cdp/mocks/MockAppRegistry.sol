@@ -3,7 +3,7 @@
 // solhint-disable no-empty-blocks, no-unused-vars, const-name-snakecase
 pragma solidity ^0.8.12;
 
-import {IAppRegistry} from "@bitdsm/interfaces/IAppRegistry.sol";
+import {IAppRegistry} from "@motif-contracts/interfaces/IAppRegistry.sol";
 
 contract MockAppRegistry is IAppRegistry {
     mapping(address => AppRegistrationStatus) private registrationStatus;

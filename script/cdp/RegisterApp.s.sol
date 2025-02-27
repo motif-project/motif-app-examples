@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Script, console} from "forge-std/Script.sol";
 import {CDP} from "../../src/cdp/Cdp.sol";
-import {AppRegistry} from "@bitdsm/core/AppRegistry.sol";
+import {AppRegistry} from "@motif-contracts/core/AppRegistry.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 
 // to deploy on local

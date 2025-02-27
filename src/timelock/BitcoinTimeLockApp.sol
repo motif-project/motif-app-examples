@@ -2,11 +2,11 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@bitdsm/interfaces/IBitcoinPod.sol";
-import "@bitdsm/interfaces/IBitcoinPodManager.sol";
-import "@bitdsm/interfaces/IAppRegistry.sol";
+import "@motif-contracts/interfaces/IBitcoinPod.sol";
+import "@motif-contracts/interfaces/IBitcoinPodManager.sol";
+import "@motif-contracts/interfaces/IAppRegistry.sol";
 import "@openzeppelin/contracts/interfaces/IERC1271.sol";
-import "@bitdsm/libraries/EIP1271SignatureUtils.sol";
+import "@motif-contracts/libraries/EIP1271SignatureUtils.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract BitcoinTimeLockApp is Ownable, IERC1271 {

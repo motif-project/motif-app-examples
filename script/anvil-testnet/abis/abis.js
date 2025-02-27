@@ -5,14 +5,15 @@ const fs = require('fs');
 const path = require('path');
 
 const abiDir = '.';
+// poin to the contracts directory
 const contractsDir = '../';
 const artifactsDir = path.join(contractsDir, 'out');
 
 const contractsToExtract = [
   'IAVSDirectory',
   'IDelegationManager',
-  'BitDSMRegistry',
-  'BitDSMServiceManager',
+  'MotifStakeRegistry',
+  'MotifServiceManager',
   'BitcoinPodManager',
   'AppRegistry',
   'BitcoinPod'

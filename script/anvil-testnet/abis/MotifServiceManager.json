@@ -8,7 +8,7 @@
         "internalType": "address"
       },
       {
-        "name": "_bitDSMRegistry",
+        "name": "_motifStakeRegistry",
         "type": "address",
         "internalType": "address"
       },
@@ -146,6 +146,19 @@
   },
   {
     "type": "function",
+    "name": "getBitcoinPodManager",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "getOperatorRestakedStrategies",
     "inputs": [
       {
@@ -266,6 +279,19 @@
       }
     ],
     "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "setBitcoinPodManager",
+    "inputs": [
+      {
+        "name": "bitcoinPodManager",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -450,5 +476,177 @@
       }
     ],
     "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "EmptyPSBTTransaction",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "EmptyWithdrawAddress",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidKeyLength",
+    "inputs": [
+      {
+        "name": "length",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidOperatorBTCKey",
+    "inputs": [
+      {
+        "name": "operatorKey",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "operatorBtcPubKey",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidOperatorSignature",
+    "inputs": [
+      {
+        "name": "operator",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidPSBTOutputs",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidPSBTTransaction",
+    "inputs": [
+      {
+        "name": "length",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidSignatureLength",
+    "inputs": [
+      {
+        "name": "length",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidTransaction",
+    "inputs": [
+      {
+        "name": "length",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NoDepositRequestToConfirm",
+    "inputs": [
+      {
+        "name": "pod",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NoPSBTOutputs",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NoWithdrawalRequestToConfirm",
+    "inputs": [
+      {
+        "name": "pod",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NoWithdrawalRequestToProcess",
+    "inputs": [
+      {
+        "name": "pod",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "TooManyPSBTOutputs",
+    "inputs": [
+      {
+        "name": "length",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "UnauthorizedPodOperator",
+    "inputs": [
+      {
+        "name": "caller",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "pod",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "WithdrawalRequestAlreadyExists",
+    "inputs": [
+      {
+        "name": "pod",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ZeroBitcoinPodManagerAddress",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ZeroWithdrawAmount",
+    "inputs": []
   }
 ]

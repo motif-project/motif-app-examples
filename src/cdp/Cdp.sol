@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./interfaces/IOracle.sol";
 import "./StableToken.sol";
-import {IBitcoinPod} from "@bitdsm/interfaces/IBitcoinPod.sol";
-import {IBitcoinPodManager} from "@bitdsm/interfaces/IBitcoinPodManager.sol";
+import {IBitcoinPod} from "@motif-contracts/interfaces/IBitcoinPod.sol";
+import {IBitcoinPodManager} from "@motif-contracts/interfaces/IBitcoinPodManager.sol";
 import {Constants} from "./Constants.sol";
-import {IAppRegistry} from "@bitdsm/interfaces/IAppRegistry.sol";
+import {IAppRegistry} from "@motif-contracts/interfaces/IAppRegistry.sol";
 
 contract CDP is ReentrancyGuard, OwnableUpgradeable, IERC1271 {
     // Constants

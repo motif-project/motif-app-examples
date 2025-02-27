@@ -13,7 +13,7 @@ import {stdJson} from "forge-std/StdJson.sol";
 // forge script script/cdp/Cdp.s.sol:DeployCDP --fork-url https://1rpc.io/holesky --broadcast --private-key $DEPLOYER_PRIVATE_KEY
 
 contract DeployCDP is Script {
-    string json = vm.readFile("./script/anvil-testnet/bitdsm_addresses.json");
+    string json = vm.readFile("./script/anvil-testnet/motif_addresses.json");
     bytes bitcoinPodManagerBytes =
         vm.parseJson(json, ".BitcoinPodManagerProxy");
     address _BITCOIN_POD_MANAGER =

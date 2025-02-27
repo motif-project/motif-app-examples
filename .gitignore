@@ -12,3 +12,5 @@ broadcast/
 .DS_Store
 script/anvil-testnet/bitdsm_addresses.json
 script/anvil-testnet/cdp-addresses.json
+
+broadcast/

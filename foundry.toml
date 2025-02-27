@@ -7,6 +7,8 @@ remappings = [
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
     "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
     "@motif-contracts/=lib/motif-contracts/src/",
+    "@eigenlayer/=lib/motif-contracts/lib/eigen-middleware/lib/eigenlayer-contracts/",
+    "@eigenlayer-middleware/=lib/motif-contracts/lib/eigenlayer-middleware/",
 ]
 # A list of ignored solc error codes
 
@@ -23,7 +25,7 @@ evm_version = "cancun"
 
 fs_permissions = [
     { access = "read-write", path = "./script/anvil-testnet/" },
-    { access = "read-write", path = "./script/anvil-testnet/bitdsm_addresses.json" },
+    { access = "read-write", path = "./script/anvil-testnet/motif_addresses.json" },
     { access = "read-write", path = "./.env" },
     { access = "read-write", path = "./script/anvil-testnet/cdp-addresses.json" },
 ]

@@ -4,8 +4,8 @@
 pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-
 import {IBitcoinPod} from "@motif-contracts/interfaces/IBitcoinPod.sol";
+
 contract MockBitcoinPod is IBitcoinPod, OwnableUpgradeable {
     bool public locked;
     bytes public signedWithdrawTx;
